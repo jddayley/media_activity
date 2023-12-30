@@ -24,6 +24,7 @@ pip install -r requirements.txt
 
 - Navigate to `http://localhost:[port]` to access the dashboard and pivot table.
 
+<img src="Screenshot.png"></img>
 ## Contributing
 - Contributions to this project are welcome. Please fork the repository and submit a pull request.
 
