@@ -1,7 +1,7 @@
-# Apple TV Activity Dashboard
+# Apple TV Activity Dashboard for HomeAssitant
 
 ## Description
-This project offers a dashboard and pivot table for analyzing Apple TV activities logged in Home Assistant. It aims to provide insightful visualizations of user interactions with Apple TV, enhancing understanding of viewing patterns and preferences.
+This project offers a dashboard and pivot table for analyzing Apple TV activities logged in Home Assistant. It aims to provide insightful visualizations of user interactions with Apple TV, enhancing understanding of viewing patterns and preferences. 
 
 ## Features
 - **Dashboard Visualization**: A user-friendly interface to view and analyze Apple TV activities.
