@@ -9,17 +9,19 @@ This project offers a dashboard and pivot table for analyzing Apple TV activitie
 - **Home Assistant Integration**: Seamless integration with Home Assistant for real-time activity data.
 
 ## Installation
+1. Clone the repository:
+   ```bash
+   git clone [repository URL]
+
 Install dependencies:
-bash
-Copy code
+
 pip install -r requirements.txt
-Usage
+
 
 To start the application, run:
 
-bash
-Copy code
 python movieDB.py
+
 Navigate to http://localhost:[port] to access the dashboard and pivot table.
 
 Contributing
