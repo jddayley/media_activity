@@ -1,0 +1,20 @@
+{% if name %}
+<h1>Hello {{ name }}!</h1>
+{% else %}
+{% endif %}
+{% set navigation_bar = [
+('/', '/', 'Home'),
+('/pivot/', 'Pivot', 'Pivot'),
+('/movie/', 'Movie', 'Movie'),
+] %}
+
+
+<link href="/static/don.css" rel="stylesheet" >
+
+<div class="topnav">
+
+    {% for href, id, caption in navigation_bar %}
+   <a  {% if id == active_page %} class="active" {% endif%} href="{{ href|e }}">{{ caption|e }}</a>
+
+    {% endfor %}
+</div>

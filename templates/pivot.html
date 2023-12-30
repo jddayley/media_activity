@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pivot Demo</title>
+    <!-- external libs from cdnjs -->
+    <script src="https://cdn.plot.ly/plotly-basic-latest.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"
+    ></script>
+
+    <!-- PivotTable.js libs from ../dist -->
+    <link rel="stylesheet" type="text/css" href="/movie/static/pivot.css" />
+    <script type="text/javascript" src="/movie/static/pivot.js"></script>
+    <script type="text/javascript" src="/movie/static/plotly_renderers.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/pivot.css" />
+    <script type="text/javascript" src="/static/pivot.js"></script>
+    <script type="text/javascript" src="/static/plotly_renderers.js"></script>
+   
+   <style>
+      body {
+        font-family: Verdana;
+      }
+    </style>
+
+    <!-- optional: mobile support with jqueryui-touch-punch -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"
+    ></script>
+
+    <!-- for examples only! script to show code to user -->
+    <!-- <script type="text/javascript" src="/movie/static/show_code.js"></script> -->
+  </head>
+  <body>
+    {% set active_page = "Pivot" %} {% include 'navigation.html' %}
+    <h2>Movies Recently Viewed</h2>
+    <script type="text/javascript">
+      // This example adds Plotly chart renderers.
+
+      $(function(){
+
+          var derivers = $.pivotUtilities.derivers;
+          var renderers = $.extend($.pivotUtilities.renderers,
+              $.pivotUtilities.plotly_renderers);
+          var tabledata = JSON.parse({{ movies|tojson|safe}});
+
+              $("#output").pivotUI(tabledata, {
+                  renderers: renderers,
+                  cols: ["event"], rows: ["id"],
+                  rendererName: "Horizontal Stacked Bar Chart",
+                  rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+              });
+
+       });
+    </script>
+
+    <!-- <p><a href="index.html">&laquo; back to PivotTable.js examples</a></p> -->
+
+    <div id="output" style="margin: 30px"></div>
+  </body>
+</html>

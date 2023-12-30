@@ -1,0 +1,6 @@
+Flask
+requests
+simplejson
+configparser
+gunicorn
+mariadb==1.0.7

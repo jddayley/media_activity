@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Movies the family watch</title>
+
+  <!-- <link href="/static/tabulator.min.css" rel="stylesheet">
+  <script type="text/javascript" src="/static/tabulator.min.js"></script> -->
+
+  <link href="/static/tabulator.min.css" rel="stylesheet">
+  <script src="/static/jquery_wrapper.min.js"></script>
+  <script type="text/javascript" src="/static/tabulator.min.js"></script>
+    
+</head>
+
+<body>
+  {% set active_page = "Movie" %}
+  {% include 'navigation.html' %}
+  <h2>Movies Recently Viewed</h2>
+  <div id="example-table"></div>
+
+  <script>
+
+    //define data
+
+var tabledata = JSON.parse({{ movies|tojson|safe}});
+//custom max min header filter
+    //define table
+    var table = new Tabulator("#example-table", {
+      data:tabledata,
+      layout: "fitDataStretch",
+      columns:[
+        {title:"Movie", field:"event", headerFilter:"input", width:500},
+        {title:"Apple TV", field:"id", headerFilter:"input"},
+        {title:"Date", field:"date", headerFilter:"input"},
+    ],
+    });
+
+
+  </script>
+
+
+</body>
+
+</html>
