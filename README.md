@@ -60,25 +60,6 @@ Before you begin, ensure you have the following installed:
 
 2. **Restart Home Assistant** to apply the changes.
 
-### Flask Application Setup
-
-1. **Install Dependencies**:
-   Ensure Flask and the MariaDB (or MySQL) connector for Python are installed in your environment:
-
-    ```bash
-    pip install Flask mariadb
-    ```
-
-2. **Configure the Flask Application**:
-   - Update the database connection details in the `getDBcon` function within your Flask application to match your MariaDB/MySQL configuration.
-
-3. **Run the Flask Application**:
-   Execute your Flask application with the following command:
-
-    ```bash
-    python movieDB.py
-    ```
-
 ## Usage
 
 After setting up the Home Assistant sensors and running the Flask application, navigate to the web interface provided by Flask (default: `http://localhost:5000/`) to view the TV activity in different rooms.
