@@ -1,14 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 import mariadb
 import sys
-from flask import render_template
-from flask import Flask, redirect, url_for, request
-from datetime import datetime
-import json
-application = Flask(__name__)
-#JSONEncoder_olddefault = json.JSONEncoder.default
 
-tableName = "members"
+application = Flask(__name__)
 
 @application.route("/")
 @application.route("/movie/")
@@ -16,29 +10,61 @@ def movie_table():
     conn = getDBcon()
     cur = conn.cursor()
     cur.execute(
-            "SELECT CONCAT( '[', GROUP_CONCAT(JSON_OBJECT('event',tv.state, 'id', tv.entity_id, 'date', tv.tvdate) ),']') as json FROM (SELECT states.state, states.entity_id, DATE(CONVERT_TZ(states.last_updated ,'+00:00','-04:00')) as tvdate  FROM homeassistant.states WHERE (states.entity_id='sensor.frontroom_activity' OR states.entity_id='sensor.kidsroom_activity' OR states.entity_id='sensor.bedroom_activity' OR states.entity_id='sensor.lg_activity') AND states.state != 'unknown' AND states.state != ' '  GROUP BY states.entity_id, states.state, DATE(last_updated) ORDER BY last_updated DESC ) as tv"
-            )
+        "SELECT CONCAT( '[', GROUP_CONCAT(JSON_OBJECT('event', tv.state, 'id', tv.name, 'date', tv.tvdate)), ']') as json "
+        "FROM ("
+        "SELECT states.state, "
+        "CASE states.metadata_id "
+        "WHEN '138' THEN 'Basement' "
+        "WHEN '139' THEN 'Bedroom' "
+        "WHEN '140' THEN 'Office' "
+        "WHEN '141' THEN 'LG TV' "
+        "END as name, "
+        "DATE(CONVERT_TZ(FROM_UNIXTIME(states.last_updated_ts), '+00:00', '-04:00')) as tvdate "
+        "FROM homeassistant.states "
+        "WHERE (states.metadata_id IN ('138', '139', '140', '141')) "
+        "AND states.state != 'unknown' "
+        "AND states.state != ' ' "
+        "AND states.last_updated_ts >= UNIX_TIMESTAMP(CURDATE()) - (2 * 86400) "
+        "GROUP BY states.metadata_id, states.state, DATE(CONVERT_TZ(FROM_UNIXTIME(states.last_updated_ts), '+00:00', '-04:00')) "
+        "ORDER BY states.last_updated_ts DESC "
+        "LIMIT 40) as tv"
+    )
     queryresult = cur.fetchone()[0]
-    #print(queryresult)
-    #queryresult = {'firstname': "Mr.", 'lastname': "My Father's Son"}
     return render_template("movie_table.html", movies=queryresult)
+
 @application.route("/pivot/")
 def pivot_table():
     conn = getDBcon()
     cur = conn.cursor()
     cur.execute(
-            "SELECT CONCAT( '[', GROUP_CONCAT(JSON_OBJECT('event',tv.state, 'id', tv.entity_id, 'date', tv.tvdate) ),']') as json FROM (SELECT states.state, states.entity_id, DATE(CONVERT_TZ(states.last_updated ,'+00:00','-04:00')) as tvdate  FROM homeassistant.states WHERE (states.entity_id='sensor.frontroom_activity' OR states.entity_id='sensor.kidsroom_activity' OR states.entity_id='sensor.bedroom_activity' OR states.entity_id='sensor.lg_activity') AND states.state != 'unknown' AND states.state != ' '  GROUP BY states.entity_id, states.state, DATE(last_updated) ORDER BY last_updated DESC ) as tv"
-            )
+        "SELECT CONCAT( '[', GROUP_CONCAT(JSON_OBJECT('event', tv.state, 'id', tv.name, 'date', tv.tvdate)), ']') as json "
+        "FROM ("
+        "SELECT states.state, "
+        "CASE states.metadata_id "
+        "WHEN '138' THEN 'Basement' "
+        "WHEN '139' THEN 'Bedroom' "
+        "WHEN '140' THEN 'Office' "
+        "WHEN '141' THEN 'LG TV' "
+        "END as name, "
+        "DATE(CONVERT_TZ(FROM_UNIXTIME(states.last_updated_ts), '+00:00', '-04:00')) as tvdate "
+        "FROM homeassistant.states "
+        "WHERE (states.metadata_id IN ('138', '139', '140', '141')) "
+        "AND states.state != 'unknown' "
+        "AND states.state != ' ' "
+        "AND states.last_updated_ts >= UNIX_TIMESTAMP(CURDATE()) - (2 * 86400) "
+        "GROUP BY states.metadata_id, states.state, DATE(CONVERT_TZ(FROM_UNIXTIME(states.last_updated_ts), '+00:00', '-04:00')) "
+        "ORDER BY states.last_updated_ts DESC "
+        "LIMIT 40) as tv"
+    )
     queryresult = cur.fetchone()[0]
-    #print(queryresult)
-    #queryresult = {'firstname': "Mr.", 'lastname': "My Father's Son"}
     return render_template("pivot.html", movies=queryresult)
+
 def getDBcon():
     try:
         conn = mariadb.connect(
             user="admin",
-            password="xxxxxxx",
-            host="192.168.1.xxx",
+            password="",
+            host="",
             port=3306,
             database="homeassistant"
         )
@@ -46,3 +72,6 @@ def getDBcon():
         print(f"Error connecting to MariaDB Platform: {e}")
         sys.exit(1)
     return conn
+
+if __name__ == "__main__":
+    application.run(debug=True)
