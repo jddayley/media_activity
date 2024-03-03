@@ -76,7 +76,7 @@ Before you begin, ensure you have the following installed:
    Execute your Flask application with the following command:
 
     ```bash
-    python <your_flask_app>.py
+    python movieDB.py
     ```
 
 ## Usage
