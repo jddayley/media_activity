@@ -1,0 +1,28 @@
+  - platform: template
+    sensors:
+      bedroom_activity:
+        friendly_name: "BedRoom Activity on TV"
+        value_template: >-
+          {%  if is_state('media_player.master', 'playing')  %}
+              {{ (state_attr('media_player.master', 'media_title')|  regex_replace(find='[^\\w]', replace=' '))  }}
+          {% endif %}
+  - platform: template
+    sensors:
+      kidsroom_activity:
+        friendly_name: "Kids Room Activity on TV"
+        value_template: >-
+          {%  if is_state('media_player.home_theater', 'playing')  %}
+              {{ (state_attr('media_player.home_theater', 'media_title')| regex_replace(find='[^\\w]', replace=' ')) }}
+          {% endif %}
+  - platform: template
+    sensors:
+      lg_activity:
+        friendly_name: "LG Activity on TV"
+        value_template: >-
+          {% if is_state('media_player.living_room_tv', 'on')  %}
+              {% if (state_attr('media_player.living_room_tv', 'media_title')| regex_replace(find='[^\\w]', replace=' ')) != 'None' %}
+                 {{ (state_attr('media_player.living_room_tv', 'media_title')| regex_replace(find='[^\\w]', replace=' ')) }}
+              {% else %}
+                 {{ (state_attr('media_player.living_room_tv', 'source')| regex_replace(find='[^\\w]', replace=' ')) }}
+              {% endif %}
+          {% endif %}
