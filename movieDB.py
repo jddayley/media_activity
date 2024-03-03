@@ -37,8 +37,8 @@ def getDBcon():
     try:
         conn = mariadb.connect(
             user="admin",
-            password="2beornot2be",
-            host="192.168.0.22",
+            password="xxxxxxx",
+            host="192.168.1.xxx",
             port=3306,
             database="homeassistant"
         )
